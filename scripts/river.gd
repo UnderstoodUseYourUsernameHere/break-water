@@ -1,3 +1,4 @@
+class_name HeadWatersRiver
 extends Node2D
 
 const HALF_WIDTH := 240.0
@@ -9,6 +10,11 @@ const WATER_COLOR := Color("#0f2a33")
 const EDGE_COLOR := Color("#46646a")
 const MARK_COLOR := Color("#3b616a")
 const START_COLOR := Color("#72918e")
+
+@export var current_speed: float = 90.0
+
+func get_current(_world_position: Vector2) -> Vector2:
+	return Vector2.DOWN * current_speed
 
 func _draw() -> void:
 	draw_rect(

@@ -26,4 +26,5 @@ shape = SubResource("RectangleShape2D_elqb8")
 position = Vector2(752, 0)
 shape = SubResource("RectangleShape2D_rvslj")
 
-[node name="Boat" parent="." unique_id=1728653579 instance=ExtResource("2_rvslj")]
+[node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
+river = NodePath("../River")

@@ -10,6 +10,7 @@ const COOLDOWN_EPSILON := 0.00001
 @export var rudder_turn_rate: float = 2.2
 @export_range(1.0, 500.0, 1.0) var full_rudder_speed: float = 140.0
 @export var lateral_drag: float = 4.0
+@export var river: HeadWatersRiver
 
 var is_aiming: bool = false
 
@@ -17,6 +18,12 @@ var _stroke_cooldown: float = 0.0
 var _row_velocity := Vector2.ZERO
 
 @onready var _hull: Node2D = $Hull
+
+func _ready() -> void:
+	assert(
+		river != null,
+		"Boat: assign the levels River node to the River field in Main!"
+	)
 
 func _physics_process(delta: float) -> void:
 	is_aiming = Input.is_action_pressed(&"aim")
@@ -32,7 +39,8 @@ func _physics_process(delta: float) -> void:
 		_stroke_cooldown = stroke_interval
 	
 	_apply_water_drag(delta)
-	velocity = _row_velocity
+	var current: Vector2 = river.get_current(global_position)
+	velocity = _row_velocity + current
 	move_and_slide()
 	_discard_blocked_row_velocity()
 	
