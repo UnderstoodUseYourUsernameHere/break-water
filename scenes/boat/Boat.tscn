@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cbbsd2lk3xfpw"]
 
 [ext_resource type="Script" uid="uid://ce8vhw6mphhij" path="res://scripts/hull.gd" id="1_t6hb8"]
+[ext_resource type="Script" uid="uid://bbuhrkwjn33f7" path="res://scripts/boat.gd" id="1_y1ild"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pspmk"]
 height = 46.0
@@ -8,6 +9,7 @@ height = 46.0
 [node name="Boat" type="CharacterBody2D" unique_id=1728653579]
 collision_layer = 2
 motion_mode = 1
+script = ExtResource("1_y1ild")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=314325811]
 shape = SubResource("CapsuleShape2D_pspmk")
