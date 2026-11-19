@@ -1,11 +1,18 @@
 extends Node2D
 
+const HULL_COLOR := Color("#e8e2d0")
+const SEAT_COLOR := Color("#334b50")
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _draw() -> void:
+	var outline := PackedVector2Array([
+		Vector2(0, -23),
+		Vector2(10, -10),
+		Vector2(10, 12),
+		Vector2(6, 20),
+		Vector2(-6, 20),
+		Vector2(-10, 12),
+		Vector2(-10, -10)
+	])
+	draw_colored_polygon(outline, HULL_COLOR)
+	draw_line(Vector2(-6, -1), Vector2(6, -1), SEAT_COLOR, 2.5, true)
+	draw_line(Vector2(-6, 8), Vector2(6, 8), SEAT_COLOR, 2.5, true)
