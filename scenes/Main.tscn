@@ -3,28 +3,11 @@
 [ext_resource type="Script" uid="uid://b5i77ky61opd3" path="res://scripts/river.gd" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://cbbsd2lk3xfpw" path="res://scenes/boat/Boat.tscn" id="2_rvslj"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_elqb8"]
-size = Vector2(1024, 12288)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rvslj"]
-size = Vector2(1024, 12288)
-
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
 
 [node name="River" type="Node2D" parent="." unique_id=969897622]
 script = ExtResource("1_elqb8")
-
-[node name="Banks" type="StaticBody2D" parent="River" unique_id=246360069]
-collision_mask = 0
-
-[node name="LeftBank" type="CollisionShape2D" parent="River/Banks" unique_id=1459762242]
-position = Vector2(-752, 0)
-shape = SubResource("RectangleShape2D_elqb8")
-
-[node name="RightBank" type="CollisionShape2D" parent="River/Banks" unique_id=556028206]
-position = Vector2(752, 0)
-shape = SubResource("RectangleShape2D_rvslj")
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
 river = NodePath("../River")

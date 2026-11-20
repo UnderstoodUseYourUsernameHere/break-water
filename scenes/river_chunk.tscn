@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://1ihymkwsjhas"]
+
+[ext_resource type="Script" uid="uid://tv0ts5w62ctc" path="res://scripts/river_chunk.gd" id="1_1yqgb"]
+[ext_resource type="Script" uid="uid://cb5u3geue7onj" path="res://scripts/river_skin.gd" id="2_muhk4"]
+
+[node name="RiverChunk" type="Node2D" unique_id=1058908975]
+script = ExtResource("1_1yqgb")
+
+[node name="Art" type="Node2D" parent="." unique_id=1649353567]
+z_index = -10
+texture_repeat = 2
+script = ExtResource("2_muhk4")
+
+[node name="Water" type="Polygon2D" parent="Art" unique_id=1994244851]
+z_index = -1
+color = Color(0.02826719, 0.297779, 0.4846245, 1)
+
+[node name="LeftLand" type="Polygon2D" parent="Art" unique_id=397705201]
+z_index = -1
+color = Color(0.13725491, 0.40392157, 0.2627451, 1)
+
+[node name="RightLand" type="Polygon2D" parent="Art" unique_id=1395133951]
+z_index = -1
+color = Color(0.13725491, 0.40392157, 0.2627451, 1)
+
+[node name="Banks" type="StaticBody2D" parent="." unique_id=1606261846]
+collision_mask = 0
+
+[node name="LeftBank" type="CollisionPolygon2D" parent="Banks" unique_id=373803627]
+
+[node name="RightBank" type="CollisionPolygon2D" parent="Banks" unique_id=932746532]
+
+[connection signal="geometry_ready" from="." to="Art" method="paint"]
