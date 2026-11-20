@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://ce8vhw6mphhij" path="res://scripts/hull.gd" id="1_t6hb8"]
 [ext_resource type="Script" uid="uid://bbuhrkwjn33f7" path="res://scripts/boat.gd" id="1_y1ild"]
+[ext_resource type="Script" uid="uid://du6xpp85spgcm" path="res://scripts/weapon.gd" id="3_cd67q"]
+[ext_resource type="Script" uid="uid://bn57t5n388a75" path="res://scripts/tracer.gd" id="4_ppm4q"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pspmk"]
 height = 46.0
@@ -22,3 +24,17 @@ offset = Vector2(0, -110)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
+
+[node name="Weapon" type="Node2D" parent="." unique_id=1127796466]
+script = ExtResource("3_cd67q")
+
+[node name="Muzzle" type="Marker2D" parent="Weapon" unique_id=277802525]
+position = Vector2(0, -24)
+
+[node name="Tracer" type="Line2D" parent="Weapon" unique_id=1673177025]
+top_level = true
+width = 2.0
+default_color = Color(1, 0.9529412, 0.8392157, 1)
+script = ExtResource("4_ppm4q")
+
+[connection signal="fired" from="Weapon" to="Weapon/Tracer" method="show_shot"]

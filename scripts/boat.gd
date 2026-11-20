@@ -18,6 +18,7 @@ var _stroke_cooldown: float = 0.0
 var _row_velocity := Vector2.ZERO
 
 @onready var _hull: Node2D = $Hull
+@onready var weapon: BoatWeapon = $Weapon
 
 func _ready() -> void:
 	assert(
@@ -28,6 +29,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	is_aiming = Input.is_action_pressed(&"aim")
 	_hull.modulate = AIM_TINT if is_aiming else Color.WHITE
+	weapon.aiming = is_aiming
+	if is_aiming and Input.is_action_pressed(&"fire"):
+		weapon.try_fire(get_global_mouse_position())
 	
 	_stroke_cooldown = maxf(0.0, _stroke_cooldown - delta)
 	var wants_row := not is_aiming and Input.is_action_pressed(&"row")
