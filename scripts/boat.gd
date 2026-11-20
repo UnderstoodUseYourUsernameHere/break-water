@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	if OS.is_debug_build() and Input.is_action_just_pressed(&"debug_damage"):
 		take_damage(1)
 	weapon.aiming = is_aiming
-	if is_aiming and Input.is_action_pressed(&"fire"):
+	if is_aiming and Input.is_action_just_pressed(&"fire"):
 		weapon.try_fire(get_global_mouse_position())
 	
 	_stroke_cooldown = maxf(0.0, _stroke_cooldown - delta)

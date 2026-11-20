@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://ejwnpsl745vu"]
+
+[ext_resource type="Script" uid="uid://3w5xngpsrlll" path="res://scripts/enemies/drifter.gd" id="1_rwnvb"]
+[ext_resource type="Script" uid="uid://buwdauy87ikl2" path="res://scripts/enemies/drifter_placeholder.gd" id="2_bak5n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pspmk"]
+radius = 14.0
+
+[node name="Drifter" type="Area2D" unique_id=733927357]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_rwnvb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=175486814]
+shape = SubResource("CircleShape2D_pspmk")
+
+[node name="Visual" type="Node2D" parent="." unique_id=1511944377]
+script = ExtResource("2_bak5n")

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b5i77ky61opd3" path="res://scripts/river.gd" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://cbbsd2lk3xfpw" path="res://scenes/boat/Boat.tscn" id="2_rvslj"]
+[ext_resource type="PackedScene" uid="uid://ejwnpsl745vu" path="res://scenes/enemies/Drifter.tscn" id="3_0bbpv"]
 
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
@@ -12,3 +13,13 @@ follow_target = NodePath("../Boat")
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
 river = NodePath("../River")
+
+[node name="Drifter" parent="." unique_id=733927357 node_paths=PackedStringArray("river", "target") instance=ExtResource("3_0bbpv")]
+position = Vector2(0, -500)
+river = NodePath("../River")
+target = NodePath("../Boat")
+
+[node name="Drifter2" parent="." unique_id=1824777861 node_paths=PackedStringArray("river", "target") instance=ExtResource("3_0bbpv")]
+position = Vector2(120, -700)
+river = NodePath("../River")
+target = NodePath("../Boat")

@@ -56,3 +56,13 @@ func _spawn_chunk(id: int) -> RiverChunk:
 	add_child(chunk)
 	chunk.build(_profile, id)
 	return chunk
+
+func water_point(local_y: float, lane: float) -> Vector2:
+	var banks := _profile.banks_at(local_y)
+	return to_global(Vector2(lerpf(banks.x, banks.y, lane), local_y))
+
+func clamp_to_water(world_position: Vector2, margin: float) -> Vector2:
+	var local := to_local(world_position)
+	var banks := _profile.banks_at(local.y)
+	local.x = clampf(local.x, banks.x + margin, banks.y - margin)
+	return to_global(local)
