@@ -6,8 +6,9 @@
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
 
-[node name="River" type="Node2D" parent="." unique_id=969897622]
+[node name="River" type="Node2D" parent="." unique_id=969897622 node_paths=PackedStringArray("follow_target")]
 script = ExtResource("1_elqb8")
+follow_target = NodePath("../Boat")
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
 river = NodePath("../River")
