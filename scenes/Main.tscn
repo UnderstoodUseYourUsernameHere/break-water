@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cf3vwknk3fbbm" path="res://scripts/waves/wave_director.gd" id="2_rarhs"]
 [ext_resource type="PackedScene" uid="uid://cbbsd2lk3xfpw" path="res://scenes/boat/Boat.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://ejwnpsl745vu" path="res://scenes/enemies/Drifter.tscn" id="3_0bbpv"]
+[ext_resource type="Script" uid="uid://ce8uigfrf387a" path="res://scripts/ui/hud.gd" id="5_vcsgt"]
 
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
@@ -20,3 +21,51 @@ drifter_scene = ExtResource("3_0bbpv")
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
 river = NodePath("../River")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1932525629 node_paths=PackedStringArray("boat", "director")]
+script = ExtResource("5_vcsgt")
+boat = NodePath("../Boat")
+director = NodePath("../WaveDirector")
+
+[node name="Stats" type="VBoxContainer" parent="HUD" unique_id=1512749722]
+offset_left = 16.0
+offset_top = 18.0
+offset_right = 56.0
+offset_bottom = 58.0
+
+[node name="Distance" type="Label" parent="HUD/Stats" unique_id=732117072]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="Hull" type="Label" parent="HUD/Stats" unique_id=1807831135]
+layout_mode = 2
+
+[node name="Kills" type="Label" parent="HUD/Stats" unique_id=1511066786]
+layout_mode = 2
+
+[node name="Reload" type="ProgressBar" parent="HUD/Stats" unique_id=1577984739]
+custom_minimum_size = Vector2(180, 8)
+layout_mode = 2
+max_value = 1.0
+show_percentage = false
+
+[node name="WaveBanner" type="Label" parent="HUD" unique_id=551677707]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 60.0
+offset_bottom = 83.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+
+[node name="GameOver" type="Label" parent="HUD" unique_id=1234119908]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
