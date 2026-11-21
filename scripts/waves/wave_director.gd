@@ -8,6 +8,7 @@ const PIXELS_PER_METER := 10.0
 @export var river: HeadWatersRiver
 @export var boat: Boat
 @export var drifter_scene: PackedScene
+@export var swimmer_scene: PackedScene
 
 @export var first_wave_at_m: float = 30.0
 @export var wave_spacing_m: float = 150.0
@@ -25,7 +26,7 @@ var peak_m: float = 0.0
 var kills: int = 0
 
 var _next_wave_m: float = 0.0
-var _queued: int = 0
+var _pending: Array[PackedScene] = []
 var _spawn_timer: float = 0.0
 var _rng := RandomNumberGenerator.new()
 
@@ -33,6 +34,8 @@ func _ready() -> void:
 	assert(river != null, "WaveDirector: assign River!")
 	assert(boat != null, "WaveDirector: assign Boat!")
 	assert(drifter_scene != null, "WaveDirector: assign DrifterScene!")
+	assert(swimmer_scene != null, "WaveDirector: assign Swimmer Scene!")
+	assert(wave_spacing_m > 0.0, "WaveDirector: Wave Spacign M must be positive!")
 	_rng.seed = ("%d:waves" % river.run_seed).hash()
 	_next_wave_m = first_wave_at_m
 
@@ -48,12 +51,12 @@ func _physics_process(delta: float) -> void:
 	
 	if (
 		not boat.is_sunk
-		and _queued > 0
+		and not _pending.is_empty()
 		and _spawn_timer == 0.0
 		and _alive_count() < max_alive 
 		):
-			_spawn_drifter(drifter_scene, boat_y)
-			_queued -= 1
+			var next_scene := _pending.pop_front() as PackedScene
+			_spawn_enemy(next_scene, boat_y)
 			_spawn_timer = spawn_interval
 	_despawn_far(boat_y)
 
@@ -64,10 +67,11 @@ func _start_wave() -> void:
 		base_wave_size + int((wave_index - 1) * wave_growth),
 		max_wave_size
 	)
-	_queued += size
-	wave_started.emit(wave_index, size)
+	var plan := _wave_plan(wave_index, size)
+	_pending.append_array(plan)
+	wave_started.emit(wave_index, plan.size())
 
-func _spawn_drifter(scene: PackedScene, boat_y: float) -> void:
+func _spawn_enemy(scene: PackedScene, boat_y: float) -> void:
 	var instance := scene.instantiate()
 	var enemy := instance as RiverEnemy
 	
@@ -103,3 +107,16 @@ func _despawn_far(boat_y: float) -> void:
 func _on_enemy_died(killed_by_player: bool) -> void:
 	if killed_by_player:
 		kills += 1
+
+func _wave_plan(index: int, points: int) -> Array[PackedScene]:
+	var plan: Array[PackedScene] = []
+	var left := maxi(1, points)
+	
+	if index >= 2 and left >= 2:
+		plan.append(swimmer_scene)
+		left -= 2
+	
+	for i in range(left):
+		plan.append(drifter_scene)
+	
+	return plan

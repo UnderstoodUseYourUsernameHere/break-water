@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://pddqrenat74c"]
+
+[ext_resource type="Script" uid="uid://b61jdqwuhvq8d" path="res://scripts/enemies/swimmer.gd" id="1_afkkg"]
+[ext_resource type="Script" uid="uid://boijb80cus20x" path="res://scripts/enemies/enemy_marker.gd" id="2_kjsac"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_afkkg"]
+radius = 12.0
+
+[node name="Swimmer" type="Area2D" unique_id=1855969108]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_afkkg")
+max_health = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=934418254]
+shape = SubResource("CircleShape2D_afkkg")
+
+[node name="Tell" type="Line2D" parent="." unique_id=2140830778]
+visible = false
+width = 2.0
+default_color = Color(1, 0.80784315, 0.4627451, 1)
+
+[node name="Visual" type="Node2D" parent="." unique_id=416121768]
+script = ExtResource("2_kjsac")
