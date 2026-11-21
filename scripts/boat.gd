@@ -2,15 +2,17 @@ class_name Boat
 extends CharacterBody2D
 
 const AIM_TINT := Color("#a7e3df")
-const COOLDOWN_EPSILON := 0.00001
 const HIT_TINT := Color("#e3572b")
 const SUNK_TINT := Color(0.35, 0.35, 0.38, 0.8)
 
 signal damaged(hull_points: int)
 signal sunk
+signal stroked(perfect: bool)
 
-@export var stroke_impulse: float = 130.0
-@export var stroke_interval: float = 0.40
+@export var stroke_force: float = 900.0
+@export var drive_time: float = 0.18
+@export var recovery_time: float = 0.26
+@export var launch_bonus: float = 0.4
 @export var water_drag: float = 1.8
 @export var max_row_speed: float = 280.0
 @export var rudder_turn_rate: float = 2.2
@@ -25,7 +27,11 @@ var hull_points: int = 0
 var is_sunk: bool = false
 var _grace_left: float = 0.0
 
-var _stroke_cooldown: float = 0.0
+enum Stroke { READY, DRIVE, RECOVER }
+var _stroke := Stroke.READY
+var _stroke_left: float = 0.0
+var _stroke_power: float = 1.0
+
 var _row_velocity := Vector2.ZERO
 
 @onready var _hull: Node2D = $Hull
@@ -48,14 +54,9 @@ func _physics_process(delta: float) -> void:
 	if is_aiming and Input.is_action_just_pressed(&"fire"):
 		weapon.try_fire(get_global_mouse_position())
 	
-	_stroke_cooldown = maxf(0.0, _stroke_cooldown - delta)
 	var wants_row := not is_sunk and not is_aiming and Input.is_action_pressed(&"row")
 	_apply_rudder(delta, wants_row)
-	
-	if wants_row and _stroke_cooldown <= COOLDOWN_EPSILON:
-		_row_velocity += Vector2.UP.rotated(global_rotation) * stroke_impulse
-		_row_velocity = _row_velocity.limit_length(max_row_speed)
-		_stroke_cooldown = stroke_interval
+	_update_stroke(delta, wants_row)
 	
 	_apply_water_drag(delta)
 	var current: Vector2 = river.get_current(global_position)
@@ -117,3 +118,37 @@ func _update_hull_tint() -> void:
 		_hull.modulate = AIM_TINT
 	else:
 		_hull.modulate = Color.WHITE
+
+func _update_stroke(delta: float, wants_row: bool) -> void:
+	if _stroke == Stroke.READY and wants_row:
+		_begin_stroke(false)
+	
+	if _stroke == Stroke.DRIVE:
+		if is_aiming or is_sunk:
+			_enter_recovery()
+			return
+		
+		var push_time := minf(delta, _stroke_left)
+		var forward := Vector2.UP.rotated(global_rotation)
+		_row_velocity += forward * stroke_force * _stroke_power * push_time
+		_row_velocity = _row_velocity.limit_length(max_row_speed)
+		
+		_stroke_left -= delta
+		if _stroke_left <= 0.0:
+			_enter_recovery()
+	elif _stroke == Stroke.RECOVER:
+		_stroke_left -= delta
+		if _stroke_left <= 0.0:
+			_stroke = Stroke.READY
+			_stroke_left = 0.0
+
+func _begin_stroke(perfect: bool) -> void:
+	var speed_ratio := clampf(_row_velocity.length() / max_row_speed, 0.0, 1.0)
+	_stroke_power = 1.0 + launch_bonus * (1.0 - speed_ratio)
+	_stroke = Stroke.DRIVE
+	_stroke_left = drive_time
+	stroked.emit(perfect)
+
+func _enter_recovery() -> void:
+	_stroke = Stroke.RECOVER
+	_stroke_left = recovery_time
