@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dv0go1my33x50"]
+
+[ext_resource type="Script" uid="uid://qv6flj543hhj" path="res://scripts/scrap_pickup.gd" id="1_ra3dr"]
+
+[node name="ScrapPickup" type="Node2D" unique_id=1920095935]
+script = ExtResource("1_ra3dr")

@@ -10,6 +10,7 @@ const PIXELS_PER_METER := 10.0
 @export var drifter_scene: PackedScene
 @export var swimmer_scene: PackedScene
 @export var gunner_scene: PackedScene
+@export var scrap_pickup_scene: PackedScene
 @export var run_state: RunState
 
 @export var first_wave_at_m: float = 30.0
@@ -35,6 +36,7 @@ func _ready() -> void:
 	assert(swimmer_scene != null, "WaveDirector: assign Swimmer Scene!")
 	assert(gunner_scene != null, "WaveDirector: assign Gunner Scene!!!!")
 	assert(run_state != null, "WaveDirector: assign RunState!")
+	assert(scrap_pickup_scene != null, "WaveDirector: assign ScrapPickupScene!!")
 	assert(wave_spacing_m > 0.0, "WaveDirector: Wave Spacign M must be positive!")
 	_rng.seed = ("%d:waves" % river.run_seed).hash()
 	_next_wave_m = first_wave_at_m
@@ -105,9 +107,18 @@ func _despawn_far(boat_y: float) -> void:
 			enemy.queue_free()
 
 func _on_enemy_died(killed_by_player: bool, bounty: int, world_position: Vector2) -> void:
-	if killed_by_player:
-		run_state.add_kill()
-		run_state.add_scrap(bounty)
+	if not killed_by_player:
+		return
+	
+	run_state.add_kill()
+	
+	var pickup := scrap_pickup_scene.instantiate() as ScrapPickup
+	pickup.value = bounty
+	pickup.target = boat
+	pickup.run_state = run_state
+	pickup.global_position = world_position
+	
+	get_parent().add_child(pickup)
 
 func _wave_plan(index: int, points: int) -> Array[PackedScene]:
 	var plan: Array[PackedScene] = []

@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://pddqrenat74c" path="res://scenes/enemies/Swimmer.tscn" id="4_c01mt"]
 [ext_resource type="PackedScene" uid="uid://u3ti26n4dkjo" path="res://scenes/enemies/BankGunner.tscn" id="5_nxtc6"]
 [ext_resource type="Script" uid="uid://ce8uigfrf387a" path="res://scripts/ui/hud.gd" id="5_vcsgt"]
+[ext_resource type="PackedScene" uid="uid://dv0go1my33x50" path="res://scenes/scrap_pickup.tscn" id="7_q8u5g"]
 
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
@@ -26,6 +27,7 @@ boat = NodePath("../Boat")
 drifter_scene = ExtResource("3_0bbpv")
 swimmer_scene = ExtResource("4_c01mt")
 gunner_scene = ExtResource("5_nxtc6")
+scrap_pickup_scene = ExtResource("7_q8u5g")
 run_state = NodePath("../RunState")
 wave_spacing_m = 100.0
 base_wave_size = 2
