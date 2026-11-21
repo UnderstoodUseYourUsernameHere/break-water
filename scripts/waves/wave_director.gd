@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 		and _spawn_timer == 0.0
 		and _alive_count() < max_alive 
 		):
-			_spawn_drifter(boat_y)
+			_spawn_drifter(drifter_scene, boat_y)
 			_queued -= 1
 			_spawn_timer = spawn_interval
 	_despawn_far(boat_y)
@@ -67,27 +67,34 @@ func _start_wave() -> void:
 	_queued += size
 	wave_started.emit(wave_index, size)
 
-func _spawn_drifter(boat_y: float) -> void:
-	var spawn_y := boat_y - spawn_ahead_px - _rng.randf_range(0.0, 120.0)
-	var lane := _rng.randf_range(0.15, 0.85)
+func _spawn_drifter(scene: PackedScene, boat_y: float) -> void:
+	var instance := scene.instantiate()
+	var enemy := instance as RiverEnemy
 	
-	var drifter := drifter_scene.instantiate() as Drifter
-	drifter.river = river
-	drifter.target = boat
-	drifter.died.connect(_on_enemy_died)
-	add_child(drifter)
-	drifter.global_position = river.water_point(spawn_y, lane)
+	if enemy == null:
+		instance.free()
+		push_error("WaveDirector: %s must have a RiverEnemy root." % scene.resource_path)
+		return
+	
+	var spawn_y := boat_y - spawn_ahead_px - _rng.randf_range(0.0, 120.0)
+	var lane := enemy.spawn_lane(_rng.randf())
+	
+	enemy.river = river
+	enemy.target = boat
+	enemy.died.connect(_on_enemy_died)
+	enemy.position = to_local(river.water_point(spawn_y, lane))
+	add_child(enemy, true)
 
 func _alive_count() -> int:
 	var count := 0
 	for child in get_children():
-		if not child.is_queued_for_deletion():
+		if child is RiverEnemy and not child.is_queued_for_deletion():
 			count += 1
 	return count
 
 func _despawn_far(boat_y: float) -> void:
 	for child in get_children():
-		var enemy := child as Node2D
+		var enemy := child as RiverEnemy
 		if enemy == null or enemy.is_queued_for_deletion():
 			continue
 		if river.to_local(enemy.global_position).y > boat_y + despawn_behind_px:

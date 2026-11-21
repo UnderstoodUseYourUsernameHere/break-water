@@ -18,6 +18,15 @@ script = ExtResource("2_rarhs")
 river = NodePath("../River")
 boat = NodePath("../Boat")
 drifter_scene = ExtResource("3_0bbpv")
+first_wave_at_m = null
+wave_spacing_m = null
+base_wave_size = null
+wave_growth = null
+max_wave_size = null
+max_alive = null
+spawn_interval = null
+spawn_ahead_px = null
+despawn_behind_px = null
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
 river = NodePath("../River")
