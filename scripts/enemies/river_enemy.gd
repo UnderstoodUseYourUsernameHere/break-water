@@ -1,10 +1,11 @@
 class_name RiverEnemy
 extends Area2D
 
-signal died(killed_by_player: bool)
+signal died(killed_by_player: bool, bounty: int, world_position: Vector2)
 
 @export var max_health: int = 1
 @export var ram_damage: int = 1
+@export var bounty: int = 1
 @export var water_margin: float = 16.0
 @export var river: HeadWatersRiver
 @export var target: Boat
@@ -49,5 +50,5 @@ func _die(killed_by_player: bool) -> void:
 		return
 	
 	_dead = true
-	died.emit(killed_by_player)
+	died.emit(killed_by_player, bounty, global_position)
 	queue_free()

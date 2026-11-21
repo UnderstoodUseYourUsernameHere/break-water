@@ -22,8 +22,9 @@ func _ready() -> void:
 	director.wave_started.connect(_on_wave_started)
 
 func _process(delta: float) -> void:
-	_distance.text = "%d m     best %d m" % [maxi(0, roundi(director.current_m)), roundi(director.peak_m)]
-	_kills.text = "KILLS  %d" % director.kills
+	var stats: RunState = director.run_state
+	_distance.text = "%d m     best %d m" % [maxi(0, roundi(stats.current_m)), roundi(stats.peak_m)]
+	_kills.text = "KILLS  %d" % stats.kills
 	_reload.value = boat.weapon.reload_ratio()
 	
 	if _banner_left > 0.0:
@@ -41,10 +42,11 @@ func _on_wave_started(index: int, size: int) -> void:
 func _on_boat_sunk() -> void:
 	_game_over = true
 	var shots: int = boat.weapon.shots_fired
+	var stats: RunState = director.run_state
 	var accuracy := 0.0
 	if shots > 0:
 		accuracy = 100.0 * boat.weapon.hits / shots
 	_game_over_label.text = (
-		"SUNK\n\n%d m\n\nkills %d    shots %d    accuracy %d%%\n\n Press R to row again!" % [roundi(director.peak_m), director.kills, shots, roundi(accuracy)]
+		"SUNK\n\n%d m\n\nkills %d    shots %d    accuracy %d%%\n\n Press R to row again!" % [roundi(stats.peak_m), stats.kills, shots, roundi(accuracy)]
 	)
 	_game_over_label.visible = true

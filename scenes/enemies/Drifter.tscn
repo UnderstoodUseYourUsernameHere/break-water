@@ -10,6 +10,10 @@ radius = 14.0
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_rwnvb")
+seek_speed = null
+max_health = null
+ram_damage = null
+water_margin = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=175486814]
 shape = SubResource("CircleShape2D_pspmk")

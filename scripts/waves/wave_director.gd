@@ -23,10 +23,6 @@ const PIXELS_PER_METER := 10.0
 @export var despawn_behind_px: float = 900.0
 
 var wave_index: int = 0
-var current_m: float = 0.0
-var peak_m: float = 0.0
-var kills: int = 0
-
 var _next_wave_m: float = 0.0
 var _pending: Array[PackedScene] = []
 var _spawn_timer: float = 0.0
@@ -108,9 +104,10 @@ func _despawn_far(boat_y: float) -> void:
 		if gap > despawn_behind_px or gap < -(spawn_ahead_px + 500.0):
 			enemy.queue_free()
 
-func _on_enemy_died(killed_by_player: bool) -> void:
+func _on_enemy_died(killed_by_player: bool, bounty: int, world_position: Vector2) -> void:
 	if killed_by_player:
 		run_state.add_kill()
+		run_state.add_scrap(bounty)
 
 func _wave_plan(index: int, points: int) -> Array[PackedScene]:
 	var plan: Array[PackedScene] = []
