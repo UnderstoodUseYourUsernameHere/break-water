@@ -10,6 +10,7 @@ const PIXELS_PER_METER := 10.0
 @export var drifter_scene: PackedScene
 @export var swimmer_scene: PackedScene
 @export var gunner_scene: PackedScene
+@export var run_state: RunState
 
 @export var first_wave_at_m: float = 30.0
 @export var wave_spacing_m: float = 150.0
@@ -37,16 +38,16 @@ func _ready() -> void:
 	assert(drifter_scene != null, "WaveDirector: assign DrifterScene!")
 	assert(swimmer_scene != null, "WaveDirector: assign Swimmer Scene!")
 	assert(gunner_scene != null, "WaveDirector: assign Gunner Scene!!!!")
+	assert(run_state != null, "WaveDirector: assign RunState!")
 	assert(wave_spacing_m > 0.0, "WaveDirector: Wave Spacign M must be positive!")
 	_rng.seed = ("%d:waves" % river.run_seed).hash()
 	_next_wave_m = first_wave_at_m
 
 func _physics_process(delta: float) -> void:
 	var boat_y := river.to_local(boat.global_position).y
-	current_m = -boat_y / PIXELS_PER_METER
-	peak_m = maxf(peak_m, current_m)
+	run_state.set_distance(-boat_y / PIXELS_PER_METER)
 	if not boat.is_sunk:
-		while peak_m >= _next_wave_m:
+		while run_state.peak_m >= _next_wave_m:
 			_start_wave()
 	
 	_spawn_timer = maxf(0.0, _spawn_timer - delta)
@@ -109,7 +110,7 @@ func _despawn_far(boat_y: float) -> void:
 
 func _on_enemy_died(killed_by_player: bool) -> void:
 	if killed_by_player:
-		kills += 1
+		run_state.add_kill()
 
 func _wave_plan(index: int, points: int) -> Array[PackedScene]:
 	var plan: Array[PackedScene] = []

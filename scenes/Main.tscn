@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://s78s27nj28c6"]
 
 [ext_resource type="Script" uid="uid://b5i77ky61opd3" path="res://scripts/river.gd" id="1_elqb8"]
+[ext_resource type="Script" uid="uid://b3v4o7t6ygi7t" path="res://scripts/run_state.gd" id="1_jlsqs"]
 [ext_resource type="Script" uid="uid://cf3vwknk3fbbm" path="res://scripts/waves/wave_director.gd" id="2_rarhs"]
 [ext_resource type="PackedScene" uid="uid://cbbsd2lk3xfpw" path="res://scenes/boat/Boat.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://ejwnpsl745vu" path="res://scenes/enemies/Drifter.tscn" id="3_0bbpv"]
@@ -11,22 +12,26 @@
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
 
+[node name="RunState" type="Node" parent="." unique_id=2052353482]
+script = ExtResource("1_jlsqs")
+
 [node name="River" type="Node2D" parent="." unique_id=969897622 node_paths=PackedStringArray("follow_target")]
 script = ExtResource("1_elqb8")
 follow_target = NodePath("../Boat")
 
-[node name="WaveDirector" type="Node2D" parent="." unique_id=553332271 node_paths=PackedStringArray("river", "boat")]
+[node name="WaveDirector" type="Node2D" parent="." unique_id=553332271 node_paths=PackedStringArray("river", "boat", "run_state")]
 script = ExtResource("2_rarhs")
 river = NodePath("../River")
 boat = NodePath("../Boat")
 drifter_scene = ExtResource("3_0bbpv")
 swimmer_scene = ExtResource("4_c01mt")
 gunner_scene = ExtResource("5_nxtc6")
-first_wave_at_m = 35.76
-wave_spacing_m = 91.8
+run_state = NodePath("../RunState")
+wave_spacing_m = 100.0
+base_wave_size = 2
 wave_growth = 2.0
-max_wave_size = 15
-max_alive = 15
+max_wave_size = 17
+max_alive = 17
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
 river = NodePath("../River")
