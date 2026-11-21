@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://ddos4xgaxbccl"]
+
+[ext_resource type="Script" uid="uid://gft7eayx5dj7" path="res://scripts/dock.gd" id="1_wwoms"]
+[ext_resource type="FontFile" uid="uid://dpa0uotuu8ok1" path="res://assets/fonts/ATP-Pleasurize.woff2" id="2_20ru0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pspmk"]
+size = Vector2(110, 90)
+
+[node name="Dock" type="Area2D" unique_id=979411993]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_wwoms")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1580590793]
+shape = SubResource("RectangleShape2D_pspmk")
+
+[node name="Visual" type="Polygon2D" parent="." unique_id=1734689801]
+color = Color(0.5411765, 0.43529412, 0.36862746, 1)
+polygon = PackedVector2Array(-32, -42, 32, -42, 32, 42, -32, 42)
+
+[node name="Label" type="Label" parent="." unique_id=1627915511]
+offset_left = -34.0
+offset_top = -64.0
+offset_right = 34.0
+offset_bottom = -40.0
+theme_override_colors/font_color = Color(0.9772485, 0.9880287, 0.5599417, 1)
+theme_override_colors/font_outline_color = Color(0.101960786, 0.101960786, 0.10980392, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_20ru0")
+theme_override_font_sizes/font_size = 14
+text = "DOCK!!!!!"
+horizontal_alignment = 1
