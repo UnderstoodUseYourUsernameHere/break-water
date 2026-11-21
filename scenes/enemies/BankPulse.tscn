@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b50is311jghsw"]
+
+[ext_resource type="Script" uid="uid://d2lm67g0b6vpd" path="res://scripts/enemies/bank_pulse.gd" id="1_gschb"]
+[ext_resource type="Script" uid="uid://boijb80cus20x" path="res://scripts/enemies/enemy_marker.gd" id="2_js4r1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_67kqs"]
+radius = 5.0
+
+[node name="BankPulse" type="CharacterBody2D" unique_id=1636656147]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_gschb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=51856076]
+shape = SubResource("CircleShape2D_67kqs")
+
+[node name="Visual" type="Node2D" parent="." unique_id=2092235124]
+script = ExtResource("2_js4r1")
+style = 2

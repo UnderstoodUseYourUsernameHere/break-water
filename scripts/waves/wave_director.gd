@@ -9,6 +9,7 @@ const PIXELS_PER_METER := 10.0
 @export var boat: Boat
 @export var drifter_scene: PackedScene
 @export var swimmer_scene: PackedScene
+@export var gunner_scene: PackedScene
 
 @export var first_wave_at_m: float = 30.0
 @export var wave_spacing_m: float = 150.0
@@ -35,6 +36,7 @@ func _ready() -> void:
 	assert(boat != null, "WaveDirector: assign Boat!")
 	assert(drifter_scene != null, "WaveDirector: assign DrifterScene!")
 	assert(swimmer_scene != null, "WaveDirector: assign Swimmer Scene!")
+	assert(gunner_scene != null, "WaveDirector: assign Gunner Scene!!!!")
 	assert(wave_spacing_m > 0.0, "WaveDirector: Wave Spacign M must be positive!")
 	_rng.seed = ("%d:waves" % river.run_seed).hash()
 	_next_wave_m = first_wave_at_m
@@ -101,7 +103,8 @@ func _despawn_far(boat_y: float) -> void:
 		var enemy := child as RiverEnemy
 		if enemy == null or enemy.is_queued_for_deletion():
 			continue
-		if river.to_local(enemy.global_position).y > boat_y + despawn_behind_px:
+		var gap := river.to_local(enemy.global_position).y - boat_y
+		if gap > despawn_behind_px or gap < -(spawn_ahead_px + 500.0):
 			enemy.queue_free()
 
 func _on_enemy_died(killed_by_player: bool) -> void:
@@ -112,7 +115,10 @@ func _wave_plan(index: int, points: int) -> Array[PackedScene]:
 	var plan: Array[PackedScene] = []
 	var left := maxi(1, points)
 	
-	if index >= 2 and left >= 2:
+	if index == 3 and left >= 3:
+		plan.append(gunner_scene)
+		left -= 3
+	elif index >= 2 and left >= 2:
 		plan.append(swimmer_scene)
 		left -= 2
 	
