@@ -10,6 +10,7 @@ var _banner_left: float = 0.0
 @onready var _distance: Label = $Stats/Distance
 @onready var _hull: Label = $Stats/Hull
 @onready var _kills: Label = $Stats/Kills
+@onready var _scrap: Label = $Stats/Scrap
 @onready var _reload: ProgressBar = $Stats/Reload
 @onready var _banner: Label = $WaveBanner
 @onready var _game_over_label: Label = $GameOver
@@ -25,6 +26,7 @@ func _process(delta: float) -> void:
 	var stats: RunState = director.run_state
 	_distance.text = "%d m     best %d m" % [maxi(0, roundi(stats.current_m)), roundi(stats.peak_m)]
 	_kills.text = "KILLS  %d" % stats.kills
+	_scrap.text = "SCRAP  %d" % stats.scrap
 	_reload.value = boat.weapon.reload_ratio()
 	
 	if _banner_left > 0.0:
