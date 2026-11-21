@@ -15,7 +15,10 @@ signal stroked(perfect: bool)
 @export var launch_bonus: float = 0.4
 @export var water_drag: float = 1.8
 @export var max_row_speed: float = 280.0
-@export var rudder_turn_rate: float = 2.2
+@export var turn_rate: float = 2.8
+@export var turn_accel: float = 14.0
+@export var pivot_authority: float = 0.45
+@export var aim_turn_scale: float = 0.35
 @export_range(1.0, 500.0, 1.0) var full_rudder_speed: float = 140.0
 @export var lateral_drag: float = 4.0
 @export var river: HeadWatersRiver
@@ -33,6 +36,7 @@ var _stroke_left: float = 0.0
 var _stroke_power: float = 1.0
 
 var _row_velocity := Vector2.ZERO
+var _turn_speed: float = 0.0
 
 @onready var _hull: Node2D = $Hull
 @onready var weapon: BoatWeapon = $Weapon
@@ -55,7 +59,7 @@ func _physics_process(delta: float) -> void:
 		weapon.try_fire(get_global_mouse_position())
 	
 	var wants_row := not is_sunk and not is_aiming and Input.is_action_pressed(&"row")
-	_apply_rudder(delta, wants_row)
+	_apply_rudder(delta)
 	_update_stroke(delta, wants_row)
 	
 	_apply_water_drag(delta)
@@ -65,25 +69,20 @@ func _physics_process(delta: float) -> void:
 	_discard_blocked_row_velocity()
 	
 
-func _apply_rudder(delta: float, wants_row: bool) -> void:
+func _apply_rudder(delta: float) -> void:
 	if is_sunk:
 		return
 		
 	var steering := Input.get_axis(&"steer_left", &"steer_right")
-	if is_zero_approx(steering):
-		return
+	var speed_authority := clampf(_row_velocity.length() / full_rudder_speed, 0.0, 1.0)
+	var authority := maxf(speed_authority, pivot_authority)
+	if is_aiming:
+		authority *= aim_turn_scale
 	
-	var authority := clampf(
-		_row_velocity.length() / full_rudder_speed,
-		0.0,
-		1.0
-	)
-	
-	if wants_row:
-		authority = maxf(authority, 0.35)
-	
-	global_rotation += steering * rudder_turn_rate * authority * delta
-
+	var target_turn := steering * turn_rate * authority
+	_turn_speed = move_toward(_turn_speed, target_turn, turn_accel * delta)
+	global_rotation += _turn_speed * delta
+ 
 func _apply_water_drag(delta: float) -> void:
 	var right := Vector2.RIGHT.rotated(global_rotation)
 	var sideways_velocity := right * _row_velocity.dot(right)
