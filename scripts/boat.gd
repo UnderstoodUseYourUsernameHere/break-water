@@ -180,3 +180,16 @@ func add_max_hull(amount: int) -> void:
 
 func apply_turn_multiplier(multiplier: float) -> void:
 	turn_rate = _base_turn_rate * multiplier
+
+func get_stroke_state() -> Stroke:
+	return _stroke 
+	
+
+func get_stroke_progress() -> float:
+	match _stroke:
+		Stroke.DRIVE:
+			return clampf(1.0 - _stroke_left / maxf(drive_time, 0.001), 0.0, 1.0)
+		Stroke.RECOVER:
+			return clampf(1.0 - _stroke_left / maxf(recovery_time, 0.001), 0.0, 1.0)
+		_:
+			return 1.0
