@@ -40,6 +40,7 @@ func take_hit(amount: int) -> void:
 		_die(true)
 		return
 	hit_taken.emit(_health, max_health)
+	SFX.play(&"enemy_hit", -5.0, 0.10)
 
 func _can_ram() -> bool:
 	return true
@@ -56,6 +57,8 @@ func _die(killed_by_player: bool) -> void:
 		return
 	
 	_dead = true
+	if killed_by_player:
+		SFX.play(&"enemy_kill", -3.0, 0.08)
 	_spawn_shards()
 	died.emit(killed_by_player, bounty, global_position)
 	queue_free()

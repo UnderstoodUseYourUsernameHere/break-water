@@ -121,6 +121,7 @@ func _finish_docking() -> void:
 		_boat.set_moored(false)
 		return
 	
+	SFX.play(&"dock", -5.0, 0.05)
 	run_state.request_shop(dock_id)
 
 func _set_prompt(message: String) -> void:

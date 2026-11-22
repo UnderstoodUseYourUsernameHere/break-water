@@ -86,8 +86,10 @@ func try_fire(target: Vector2) -> bool:
 	rounds -= 1
 	if rounds <= 0:
 		_reload_left = reload_time
+		SFX.play(&"reload", -2.0, 0.08)
 	
 	fired.emit(from, end, hit_any)
+	SFX.play(&"shot", -4.0, 0.05)
 	queue_redraw()
 	return true
 

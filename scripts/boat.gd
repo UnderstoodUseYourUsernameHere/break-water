@@ -119,6 +119,7 @@ func take_damage(amount: int = 1) -> void:
 	hull_points = maxi(0, hull_points - amount)
 	_grace_left = damage_grace
 	damaged.emit(hull_points)
+	SFX.play(&"boat_hit", -3.0, 0.08)
 	if hull_points == 0:
 		is_sunk = true
 		sunk.emit()

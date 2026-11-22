@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b61jdqwuhvq8d" path="res://scripts/enemies/swimmer.gd" id="1_afkkg"]
 [ext_resource type="Script" uid="uid://boijb80cus20x" path="res://scripts/enemies/enemy_marker.gd" id="2_kjsac"]
 [ext_resource type="Script" uid="uid://c0c3ybc15ex2b" path="res://scripts/enemies/tell_line.gd" id="2_tl00v"]
-[ext_resource type="Script" uid="uid://deitelia7bbva" path="res://scenes/enemies/enemy_damage_fx.gd" id="4_tl00v"]
+[ext_resource type="Script" uid="uid://deitelia7bbva" path="res://scripts/enemies/enemy_damage_fx.gd" id="4_tl00v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_afkkg"]
 radius = 12.0

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://gft7eayx5dj7" path="res://scripts/dock.gd" id="1_wwoms"]
 [ext_resource type="FontFile" uid="uid://dpa0uotuu8ok1" path="res://assets/fonts/ATP-Pleasurize.woff2" id="2_20ru0"]
-[ext_resource type="Script" uid="uid://dk76b1maajirl" path="res://scenes/river/dock_visual.gd" id="2_bpfqw"]
+[ext_resource type="Script" uid="uid://dk76b1maajirl" path="res://scripts/dock_visual.gd" id="2_bpfqw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pspmk"]
 size = Vector2(120, 90)

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://8qwmehrhjrkx" path="res://scripts/enemies/bank_gunner.gd" id="1_67kqs"]
 [ext_resource type="Script" uid="uid://c0c3ybc15ex2b" path="res://scripts/enemies/tell_line.gd" id="2_7qlap"]
 [ext_resource type="Script" uid="uid://boijb80cus20x" path="res://scripts/enemies/enemy_marker.gd" id="2_swrly"]
-[ext_resource type="Script" uid="uid://deitelia7bbva" path="res://scenes/enemies/enemy_damage_fx.gd" id="4_3jdqv"]
+[ext_resource type="Script" uid="uid://deitelia7bbva" path="res://scripts/enemies/enemy_damage_fx.gd" id="4_3jdqv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_swrly"]
 radius = 13.0

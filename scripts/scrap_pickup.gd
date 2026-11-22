@@ -41,6 +41,7 @@ func _process(delta: float) -> void:
 func _collect() -> void:
 	if run_state != null:
 		run_state.add_scrap(value)
+		SFX.play(&"scrap", -6.0, 0.12)
 	queue_free()
 
 func _draw() -> void:

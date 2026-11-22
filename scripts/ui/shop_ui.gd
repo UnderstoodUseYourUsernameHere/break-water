@@ -108,6 +108,7 @@ func _on_offer_pressed(index: int) -> void:
 		return
 	
 	_apply_upgrade(id)
+	SFX.play(&"buy", -4.0, 0.05)
 	
 	if not UpgradeDefs.is_consumable(id):
 		run_state.add_upgrade_level(id)
@@ -117,6 +118,7 @@ func _on_offer_pressed(index: int) -> void:
 func _on_leave_pressed() -> void:
 	if _active_dock_id != -1:
 		run_state.mark_dock_used(_active_dock_id)
+		SFX.play(&"undock", -6.0, 0.05)
 		_active_dock_id = -1
 	
 	_panel.hide()
