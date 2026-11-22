@@ -36,6 +36,7 @@ var _stroke_left: float = 0.0
 var _stroke_power: float = 1.0
 var _base_stroke_force: float = 0.0
 
+var _base_turn_rate: float = 0.0
 var _row_velocity := Vector2.ZERO
 var _turn_speed: float = 0.0
 
@@ -49,6 +50,7 @@ func _ready() -> void:
 	)
 	hull_points = max_hull_points
 	_base_stroke_force = stroke_force
+	_base_turn_rate = turn_rate
 
 func _physics_process(delta: float) -> void:
 	_grace_left = maxf(0.0, _grace_left - delta)
@@ -168,3 +170,13 @@ func repair_hull(amount: int) -> bool:
 
 func _apply_stroke_multiplier(multiplier: float) -> void:
 	stroke_force = _base_stroke_force * multiplier
+
+func add_max_hull(amount: int) -> void:
+	if amount <= 0:
+		return
+	max_hull_points += amount
+	hull_points = mini(max_hull_points, hull_points + amount)
+	damaged.emit(hull_points)
+
+func apply_turn_multiplier(multiplier: float) -> void:
+	turn_rate = _base_turn_rate * multiplier

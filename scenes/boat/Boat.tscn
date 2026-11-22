@@ -39,8 +39,6 @@ position_smoothing_speed = 8.0
 
 [node name="Weapon" type="Node2D" parent="." unique_id=1127796466]
 script = ExtResource("3_cd67q")
-max_rounds = 2
-pierce = 2
 
 [node name="Muzzle" type="Marker2D" parent="Weapon" unique_id=277802525]
 position = Vector2(0, -24)
