@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://u3ti26n4dkjo"]
 
 [ext_resource type="Script" uid="uid://8qwmehrhjrkx" path="res://scripts/enemies/bank_gunner.gd" id="1_67kqs"]
+[ext_resource type="Script" uid="uid://c0c3ybc15ex2b" path="res://scripts/enemies/tell_line.gd" id="2_7qlap"]
 [ext_resource type="Script" uid="uid://boijb80cus20x" path="res://scripts/enemies/enemy_marker.gd" id="2_swrly"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_swrly"]
@@ -24,6 +25,7 @@ shape = SubResource("CircleShape2D_swrly")
 visible = false
 width = 2.0
 default_color = Color(1, 0.88235295, 0.6039216, 1)
+script = ExtResource("2_7qlap")
 
 [node name="Visual" type="Node2D" parent="." unique_id=226840019]
 script = ExtResource("2_swrly")

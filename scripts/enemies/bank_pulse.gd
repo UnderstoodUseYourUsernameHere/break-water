@@ -22,3 +22,25 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 	elif remaining_px <= 0.0:
 		queue_free()
+	
+	queue_redraw()
+
+func _draw() -> void:
+	var back := -direction * 22.0
+	
+	draw_line(
+		back, 
+		Vector2.ZERO,
+		Color(1.0, 0.72, 0.35, 0.35),
+		3.0,
+		true
+	)
+	draw_line(
+		back * 0.45,
+		Vector2.ZERO,
+		Color(1.0, 0.86, 0.55, 0.7),
+		5.0,
+		true
+	)
+	draw_circle(Vector2.ZERO, 5.5, Color(1.0, 0.92, 0.70, 0.95))
+	draw_circle(Vector2.ZERO, 2.5, Color.WHITE)

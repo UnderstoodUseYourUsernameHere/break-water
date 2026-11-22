@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b61jdqwuhvq8d" path="res://scripts/enemies/swimmer.gd" id="1_afkkg"]
 [ext_resource type="Script" uid="uid://boijb80cus20x" path="res://scripts/enemies/enemy_marker.gd" id="2_kjsac"]
+[ext_resource type="Script" uid="uid://c0c3ybc15ex2b" path="res://scripts/enemies/tell_line.gd" id="2_tl00v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_afkkg"]
 radius = 12.0
@@ -19,6 +20,7 @@ shape = SubResource("CircleShape2D_afkkg")
 visible = false
 width = 2.0
 default_color = Color(1, 0.80784315, 0.4627451, 1)
+script = ExtResource("2_tl00v")
 
 [node name="Visual" type="Node2D" parent="." unique_id=416121768]
 script = ExtResource("2_kjsac")
