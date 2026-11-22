@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://ce8vhw6mphhij" path="res://scripts/hull.gd" id="1_t6hb8"]
 [ext_resource type="Script" uid="uid://bbuhrkwjn33f7" path="res://scripts/boat.gd" id="1_y1ild"]
+[ext_resource type="Script" uid="uid://dsxwmlres2ttd" path="res://scripts/wake_trail.gd" id="2_x50n2"]
 [ext_resource type="Script" uid="uid://du6xpp85spgcm" path="res://scripts/weapon.gd" id="3_cd67q"]
+[ext_resource type="Script" uid="uid://dv50o1o2uhrj7" path="res://scripts/oars_visual.gd" id="3_rbo8c"]
 [ext_resource type="Script" uid="uid://bn57t5n388a75" path="res://scripts/tracer.gd" id="4_ppm4q"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pspmk"]
@@ -13,8 +15,18 @@ collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_y1ild")
 
+[node name="Wake" type="Line2D" parent="." unique_id=738942626]
+width = 7.0
+default_color = Color(0.62352943, 0.76862746, 0.7882353, 0.43137255)
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("2_x50n2")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=314325811]
 shape = SubResource("CapsuleShape2D_pspmk")
+
+[node name="Oars" type="Node2D" parent="." unique_id=1711536493]
+script = ExtResource("3_rbo8c")
 
 [node name="Hull" type="Node2D" parent="." unique_id=541313109]
 script = ExtResource("1_t6hb8")

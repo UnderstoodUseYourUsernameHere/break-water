@@ -39,13 +39,16 @@ swimmer_scene = ExtResource("4_c01mt")
 gunner_scene = ExtResource("5_nxtc6")
 scrap_pickup_scene = ExtResource("7_q8u5g")
 run_state = NodePath("../RunState")
-wave_spacing_m = 100.0
-base_wave_size = 2
-wave_growth = 2.0
+first_wave_at_m = 12.0
+wave_spacing_m = 85.0
 max_wave_size = 17
-max_alive = 17
+max_alive = 12
+spawn_interval = 0.45
+spawn_ahead_px = 540.0
 
 [node name="Boat" parent="." unique_id=1728653579 node_paths=PackedStringArray("river") instance=ExtResource("2_rvslj")]
+stroke_force = 1000.0
+launch_bonus = 0.6
 river = NodePath("../River")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1932525629 node_paths=PackedStringArray("boat", "director")]
