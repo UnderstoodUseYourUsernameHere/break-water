@@ -22,6 +22,10 @@ var aiming: bool = false:
 var shots_fired: int = 0
 var hits: int = 0
 var _reload_left: float = 0.0
+var _base_reload_time: float = 0.0
+
+func _ready() -> void:
+	_base_reload_time = reload_time
 
 func is_loaded() -> bool:
 	return _reload_left <= 0.0
@@ -80,3 +84,6 @@ func _draw() -> void:
 	var color := AIM_READY_COLOR if is_loaded() else AIM_EMPTY_COLOR
 	draw_dashed_line(from, to, color, 1.5, 8.0)
 	draw_circle(to, 4.0, color)
+
+func apply_reload_multiplier(multiplier: float) -> void:
+	reload_time = maxf(0.35, _base_reload_time * multiplier)

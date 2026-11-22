@@ -34,6 +34,7 @@ enum Stroke { READY, DRIVE, RECOVER }
 var _stroke := Stroke.READY
 var _stroke_left: float = 0.0
 var _stroke_power: float = 1.0
+var _base_stroke_force: float = 0.0
 
 var _row_velocity := Vector2.ZERO
 var _turn_speed: float = 0.0
@@ -47,6 +48,7 @@ func _ready() -> void:
 		"Boat: assign the levels River node to the River field in Main!"
 	)
 	hull_points = max_hull_points
+	_base_stroke_force = stroke_force
 
 func _physics_process(delta: float) -> void:
 	_grace_left = maxf(0.0, _grace_left - delta)
@@ -155,3 +157,14 @@ func _enter_recovery() -> void:
 func get_water_speed() -> float:
 	return _row_velocity.length()
 	
+
+func repair_hull(amount: int) -> bool:
+	if amount <= 0 or is_sunk or hull_points >= max_hull_points:
+		return false
+	
+	hull_points = mini(max_hull_points, hull_points + amount)
+	damaged.emit(hull_points)
+	return true
+
+func _apply_stroke_multiplier(multiplier: float) -> void:
+	stroke_force = _base_stroke_force * multiplier

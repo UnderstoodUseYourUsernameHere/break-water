@@ -36,9 +36,11 @@ func add_scrap(amount: int) -> void:
 	scrap_changed.emit(scrap)
 
 func can_spend(amount: int) -> bool:
-	if amount <= 0:
+	return scrap >= amount
+
+func spend_scrap(amount: int) -> bool:
+	if amount <= 0.0:
 		return true
-	
 	if scrap < amount:
 		return false
 	

@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @export var run_state: RunState
+@export var boat: Boat
 
 var _active_dock_id: int = -1
 var _offers: Array[StringName] = []
@@ -16,6 +17,7 @@ var _offers: Array[StringName] = []
 
 func _ready() -> void:
 	assert(run_state != null, "ShopUI: assign Runstate!")
+	assert(boat != null, "ShopUI: assign the damn boat, CJ!")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	_panel.hide()
@@ -23,7 +25,7 @@ func _ready() -> void:
 	_leave_button.pressed.connect(_on_leave_pressed)
 	
 	for i in range(_offer_buttons.size()):
-		_offer_buttons[i].pressed.connect(_on_offer_pressed.bind)
+		_offer_buttons[i].pressed.connect(_on_offer_pressed.bind(i))
 
 func _on_shop_requested(dock_id: int) -> void:
 	if run_state.is_dock_used(dock_id):
@@ -52,20 +54,26 @@ func _refresh() -> void:
 			cost,
 			"MAXED" if maxed else UpgradeDefs.description(id, level)
 		]
-		_offer_buttons[i].disabled = maxed or not run_state.can_spend(cost)
+		var useless_patch := id == UpgradeDefs.HULL_PATCH and boat.hull_points >= boat.max_hull_points
+		_offer_buttons[i].disabled = maxed or useless_patch or not run_state.can_spend(cost)
 
 func _on_offer_pressed(index: int) -> void:
 	var id := _offers[index]
 	var level := run_state.upgrade_level(id)
 	var cost := UpgradeDefs.cost(id, level)
 	
+	if id == UpgradeDefs.HULL_PATCH and boat.hull_points >= boat.max_hull_points:
+		return
+	
 	if not run_state.spend_scrap(cost):
 		return
+	
+	_apply_upgrade(id)
 	
 	if not UpgradeDefs.is_consumable(id):
 		run_state.add_upgrade_level(id)
 	
-	_refresh()	
+	_refresh()
 
 func _on_leave_pressed() -> void:
 	if _active_dock_id != -1:
@@ -74,3 +82,14 @@ func _on_leave_pressed() -> void:
 	
 	_panel.hide()
 	get_tree().paused = false
+
+func _apply_upgrade(id: StringName) -> void:
+	var next_level := run_state.upgrade_level(id) + 1
+	
+	match id:
+		UpgradeDefs.QUICK_BOLT:
+			boat.weapon.apply_reload_multiplier(pow(0.84, next_level))
+		UpgradeDefs.HULL_PATCH:
+			boat.repair_hull(2)
+		UpgradeDefs.STRONGER_ARMS:
+			boat._apply_stroke_multiplier(1.0 + 0.12 * float(next_level))
