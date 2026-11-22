@@ -17,7 +17,7 @@ script = ExtResource("1_y1ild")
 
 [node name="Wake" type="Line2D" parent="." unique_id=738942626]
 width = 7.0
-default_color = Color(0.62352943, 0.76862746, 0.7882353, 0.43137255)
+default_color = Color(0.62352943, 0.76862746, 0.7882353, 1)
 begin_cap_mode = 2
 end_cap_mode = 2
 script = ExtResource("2_x50n2")
@@ -39,6 +39,8 @@ position_smoothing_speed = 8.0
 
 [node name="Weapon" type="Node2D" parent="." unique_id=1127796466]
 script = ExtResource("3_cd67q")
+max_rounds = 2
+pierce = 2
 
 [node name="Muzzle" type="Marker2D" parent="Weapon" unique_id=277802525]
 position = Vector2(0, -24)
