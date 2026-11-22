@@ -23,6 +23,10 @@ const PIXELS_PER_METER := 10.0
 @export var spawn_ahead_px: float = 650.0
 @export var despawn_behind_px: float = 900.0
 
+@export var stretch_length_m: float = 200.0
+@export var budget_per_stretch: int = 2
+@export var budget_per_upgrade_level: float = 0.5
+
 var wave_index: int = 0
 var _next_wave_m: float = 0.0
 var _pending: Array[PackedScene] = []
@@ -64,10 +68,7 @@ func _physics_process(delta: float) -> void:
 func _start_wave() -> void:
 	wave_index += 1
 	_next_wave_m += wave_spacing_m
-	var size := mini(
-		base_wave_size + int((wave_index - 1) * wave_growth),
-		max_wave_size
-	)
+	var size := _wave_budget()
 	var plan := _wave_plan(wave_index, size)
 	_pending.append_array(plan)
 	wave_started.emit(wave_index, plan.size())
@@ -135,3 +136,10 @@ func _wave_plan(index: int, points: int) -> Array[PackedScene]:
 		plan.append(drifter_scene)
 	
 	return plan
+
+func _wave_budget() -> int:
+	var base := base_wave_size + int((wave_index - 1) * wave_growth)
+	var stretch := floori(run_state.peak_m / stretch_length_m)
+	var from_distance := stretch * budget_per_stretch
+	var from_upgrades := floori(run_state.total_upgrade_levels() * budget_per_upgrade_level)
+	return mini(base + from_distance + from_upgrades, max_wave_size)
