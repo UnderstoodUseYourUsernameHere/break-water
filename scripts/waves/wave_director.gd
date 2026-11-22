@@ -5,6 +5,10 @@ signal wave_started(index: int, size: int)
 
 const PIXELS_PER_METER := 10.0
 
+const COST_DRIFTER := 1
+const COST_SWIMMER := 2
+const COST_GUNNER := 3
+
 @export var river: HeadWatersRiver
 @export var boat: Boat
 @export var drifter_scene: PackedScene
@@ -12,6 +16,11 @@ const PIXELS_PER_METER := 10.0
 @export var gunner_scene: PackedScene
 @export var scrap_pickup_scene: PackedScene
 @export var run_state: RunState
+
+@export var max_gunners_per_wave: int = 2
+@export var max_swimmers_per_wave: int = 3
+@export var gunner_chance: float = 0.28
+@export var swimmer_chance: float = 0.34
 
 @export var first_wave_at_m: float = 30.0
 @export var wave_spacing_m: float = 150.0
@@ -125,15 +134,52 @@ func _wave_plan(index: int, points: int) -> Array[PackedScene]:
 	var plan: Array[PackedScene] = []
 	var left := maxi(1, points)
 	
-	if index == 3 and left >= 3:
-		plan.append(gunner_scene)
-		left -= 3
-	elif index >= 2 and left >= 2:
-		plan.append(swimmer_scene)
-		left -= 2
+	var picks := RandomNumberGenerator.new()
+	picks.seed = ("%d:wave-plan:%d" % [river.run_seed, index]).hash()
 	
-	for i in range(left):
-		plan.append(drifter_scene)
+	var gunners := 0
+	var swimmers := 0
+	
+	if index == 2 and left >= COST_SWIMMER:
+		plan.append(swimmer_scene)
+		left -= COST_SWIMMER
+		swimmers += 1
+	elif index == 3 and left >= COST_GUNNER:
+		plan.append(gunner_scene)
+		left -= COST_GUNNER
+		gunners += 1
+	
+	while left >= COST_DRIFTER:
+		var roll := picks.randf()
+		
+		if (
+			index >= 3
+			and roll < gunner_chance
+			and left >= COST_GUNNER
+			and gunners < max_gunners_per_wave
+		):
+			plan.append(gunner_scene)
+			left -= COST_GUNNER
+			gunners += 1
+		elif (
+			index >= 2
+			and roll < gunner_chance + swimmer_chance
+			and left >= COST_SWIMMER
+			and swimmers < max_swimmers_per_wave
+		):
+			plan.append(swimmer_scene)
+			left -= COST_SWIMMER
+			swimmers += 1
+		else:
+			plan.append(drifter_scene)
+			left -= COST_DRIFTER
+	
+	if index >= 4:
+		for i in range(plan.size() - 1, 0, -1):
+			var j := picks.randi_range(0, 1)
+			var swapped := plan[i]
+			plan[i] = plan[j]
+			plan[j] = swapped
 	
 	return plan
 
