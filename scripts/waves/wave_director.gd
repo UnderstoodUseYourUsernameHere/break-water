@@ -104,7 +104,7 @@ func _despawn_far(boat_y: float) -> void:
 		if enemy == null or enemy.is_queued_for_deletion():
 			continue
 		var gap := river.to_local(enemy.global_position).y - boat_y
-		if gap > despawn_behind_px or gap < -(spawn_ahead_px + 500.0):
+		if gap > despawn_behind_px or gap < -(spawn_ahead_px + 510.0):
 			enemy.queue_free()
 
 func _on_enemy_died(killed_by_player: bool, bounty: int, world_position: Vector2) -> void:
