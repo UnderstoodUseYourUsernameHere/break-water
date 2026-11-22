@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://ce8uigfrf387a" path="res://scripts/ui/hud.gd" id="5_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dv0go1my33x50" path="res://scenes/scrap_pickup.tscn" id="7_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://blcvstv62lstf" path="res://scenes/ui/Shop_UI.tscn" id="12_bjd11"]
+[ext_resource type="FontFile" uid="uid://dpa0uotuu8ok1" path="res://assets/fonts/ATP-Pleasurize.woff2" id="12_qmy6f"]
 
 [node name="Main" type="Node2D" unique_id=780132535]
 position = Vector2(461, 267)
@@ -52,6 +53,7 @@ launch_bonus = 0.6
 river = NodePath("../River")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1932525629 node_paths=PackedStringArray("boat", "director")]
+layer = 10
 script = ExtResource("5_vcsgt")
 boat = NodePath("../Boat")
 director = NodePath("../WaveDirector")
@@ -102,6 +104,21 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DockPrompt" type="Label" parent="HUD" unique_id=2049756214]
+visible = false
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -60.0
+offset_right = -40.0
+offset_bottom = -24.0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("12_qmy6f")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
 
 [node name="ShopUi" parent="." unique_id=145220562 node_paths=PackedStringArray("run_state", "boat", "river") instance=ExtResource("12_bjd11")]
 run_state = NodePath("../RunState")

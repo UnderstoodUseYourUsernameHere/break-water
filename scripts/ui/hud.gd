@@ -6,6 +6,7 @@ extends CanvasLayer
 
 var _game_over: bool = false
 var _banner_left: float = 0.0
+var _dock_prompt_source: Node = null
 
 @onready var _distance: Label = $Stats/Distance
 @onready var _hull: Label = $Stats/Hull
@@ -14,6 +15,7 @@ var _banner_left: float = 0.0
 @onready var _reload: ProgressBar = $Stats/Reload
 @onready var _banner: Label = $WaveBanner
 @onready var _game_over_label: Label = $GameOver
+@onready var _dock_prompt: Label = $DockPrompt
 
 func _ready() -> void:
 	assert(boat != null and director != null, "HUD: assign Boat and Director!")
@@ -52,3 +54,14 @@ func _on_boat_sunk() -> void:
 		"SUNK\n\n%d m\n\nkills %d    shots %d    accuracy %d%%\n\n Press R to row again!" % [roundi(stats.peak_m), stats.kills, shots, roundi(accuracy)]
 	)
 	_game_over_label.visible = true
+
+func set_dock_prompt(source: Node, message: String) -> void:
+	if message.is_empty():
+		if _dock_prompt_source == source:
+			_dock_prompt_source = null
+			_dock_prompt.hide()
+		return
+	
+	_dock_prompt_source = source
+	_dock_prompt.text = message
+	_dock_prompt.show(	)

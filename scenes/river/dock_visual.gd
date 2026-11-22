@@ -96,7 +96,7 @@ func _draw() -> void:
 			draw_polyline(
 				PackedVector2Array([
 					Vector2(x + 8.0, 30.0),
-					Vector2(x + 38.0),
+					Vector2(x, 38.0),
 					Vector2(x + 6.0, 46.0)
 				]),
 				Color(1.0, 0.87, 0.52, 0.75),
