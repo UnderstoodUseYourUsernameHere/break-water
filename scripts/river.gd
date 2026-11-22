@@ -66,3 +66,33 @@ func clamp_to_water(world_position: Vector2, margin: float) -> Vector2:
 	var banks := _profile.banks_at(local.y)
 	local.x = clampf(local.x, banks.x + margin, banks.y - margin)
 	return to_global(local)
+
+func get_dock_transform(local_y: float, right_bank: bool) -> Transform2D:
+	var sample_distance  := float(RiverProfile.STEP * 2)
+	
+	var banks := _profile.banks_at(local_y)
+	var before := _profile.banks_at(local_y - sample_distance)
+	var after := _profile.banks_at(local_y + sample_distance)
+	
+	var edge_x := banks.y if right_bank else banks.x
+	var before_x := before.y if right_bank else before.x
+	var after_x := after.y if right_bank else after.x
+	
+	var edge := Vector2(edge_x, local_y)
+	var center := Vector2((banks.x + banks.y) * 0.5, local_y)
+	
+	var tangent := Vector2(
+		after_x - before_x,
+		sample_distance * 2.0
+	).normalized()
+	
+	var inward := Vector2(-tangent.y, tangent.x).normalized()
+	if inward.dot(center - edge) < 0.0:
+		inward = -inward
+	
+	var world_origin := to_global(edge)
+	var world_inward := (
+		to_global(edge + inward) - world_origin
+	).normalized()
+	
+	return Transform2D(world_inward.angle(), world_origin)

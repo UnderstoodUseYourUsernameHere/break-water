@@ -43,10 +43,12 @@ func _spawn_dock(index: int, dock_m: float) -> void:
 	dock.run_state = run_state
 	
 	var local_y := -dock_m * PIXELS_PER_METER
-	var lane := 0.07 if index % 2 == 1 else 0.93
-	
+	var right_bank := index % 2 == 0
 	add_child(dock)
-	dock.global_position = river.water_point(local_y, lane)
+	dock.global_transform = river.get_dock_transform(
+		local_y,
+		right_bank
+	)
 	_spawned[index] = dock
 
 func _despawn_far() -> void:

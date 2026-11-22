@@ -26,6 +26,7 @@ signal stroked(perfect: bool)
 @export var damage_grace: float = 0.6
 
 var is_aiming: bool = false
+var is_moored: bool = false
 var hull_points: int = 0
 var is_sunk: bool = false
 var _grace_left: float = 0.0
@@ -54,6 +55,16 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_grace_left = maxf(0.0, _grace_left - delta)
+	
+	if is_moored:
+		is_aiming = false
+		weapon.aiming = false
+		_row_velocity = Vector2.ZERO
+		_turn_speed = 0.0
+		velocity = Vector2.ZERO
+		_update_hull_tint()
+		return
+	
 	is_aiming = not is_sunk and Input.is_action_pressed(&"aim")
 	_update_hull_tint()
 	if OS.is_debug_build() and Input.is_action_just_pressed(&"debug_damage"):
@@ -193,3 +204,15 @@ func get_stroke_progress() -> float:
 			return clampf(1.0 - _stroke_left / maxf(recovery_time, 0.001), 0.0, 1.0)
 		_:
 			return 1.0
+
+func set_moored(value: bool) -> void:
+	is_moored = value
+	
+	if value:
+		is_aiming = false
+		weapon.aiming = false
+		_row_velocity = Vector2.ZERO
+		_turn_speed = 0.0
+		velocity = Vector2.ZERO
+		_stroke = Stroke.READY
+		_stroke_left = 0.0

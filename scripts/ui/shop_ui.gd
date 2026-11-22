@@ -120,6 +120,8 @@ func _on_leave_pressed() -> void:
 		_active_dock_id = -1
 	
 	_panel.hide()
+	if is_instance_valid(boat):
+		boat.set_moored(false)
 	get_tree().paused = false
 
 func _apply_upgrade(id: StringName) -> void:
