@@ -1,7 +1,7 @@
 class_name BankPulse
 extends CharacterBody2D
 
-@export var speed: float = 175.0
+@export var speed: float = 250.0
 
 var target: Boat
 var direction := Vector2.RIGHT

@@ -3,9 +3,10 @@ extends RiverEnemy
 
 const PULSE_SCENE: PackedScene = preload("res://scenes/enemies/BankPulse.tscn")
 
-@export var reach_px: float = 300.0
-@export var warning_seconds: float = 1.15
-@export var cooldown_seconds: float = 2.8
+@export var reach_px: float = 550.0
+@export var warning_seconds: float = 0.5
+@export var cooldown_seconds: float = 1
+@export var behind_tolerance_px: float = 140.0
 
 var _warning_left: float = 0.0
 var _cooldown_left: float = 0.0
@@ -42,14 +43,16 @@ func _physics_process(delta: float) -> void:
 	if _cooldown_left > 0.0:
 		return
 	
-	_cooldown_left = 0.15
+	_cooldown_left = 0.08
 	_try_begin_warning()
 
 func _try_begin_warning() -> void:
 	if not _on_screen():
 		return
 	
-	if river.to_local(global_position).y > river.to_local(target.global_position).y:
+	var gunner_y := river.to_local(global_position).y
+	var boat_y := river.to_local(target.global_position).y
+	if gunner_y > boat_y + behind_tolerance_px:
 		return
 	
 	var offset := target.global_position - global_position
