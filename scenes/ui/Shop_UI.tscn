@@ -41,10 +41,31 @@ theme_override_fonts/font = ExtResource("2_mpa6r")
 theme_override_font_sizes/font_size = 18
 text = "SCRAP: 0"
 
+[node name="Offer1" type="Button" parent="Panel" unique_id=1778093402]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 100.0
+offset_right = 396.0
+offset_bottom = 138.0
+
+[node name="Offer2" type="Button" parent="Panel" unique_id=886321541]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 146.0
+offset_right = 396.0
+offset_bottom = 184.0
+
+[node name="Offer3" type="Button" parent="Panel" unique_id=1804607774]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 192.0
+offset_right = 396.0
+offset_bottom = 230.0
+
 [node name="LeaveButton" type="Button" parent="Panel" unique_id=93558108]
 layout_mode = 0
 offset_left = 135.0
-offset_top = 236.0
+offset_top = 246.0
 offset_right = 285.0
-offset_bottom = 276.0
+offset_bottom = 286.0
 text = "LEAVE DOCK"

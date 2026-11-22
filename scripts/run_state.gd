@@ -58,6 +58,13 @@ func upgrade_level(id: StringName) -> int:
 func add_upgrade_level(id: StringName) -> void:
 	upgrade_levels[id] = upgrade_level(id) + 1
 
+func total_upgrade_levels() -> int:
+	var total := 0 
+	for key in upgrade_levels.keys():
+		total += int(upgrade_levels[key])
+	return total
+	
+
 func request_shop(dock_id: int) -> void:
 	if is_dock_used(dock_id):
 		return
