@@ -3,15 +3,17 @@ extends RiverEnemy
 
 enum Phase { SEEK, WARN, LUNGE, RECOVER }
 
-@export var approach_speed: float = 110.0
-@export var trigger_distance: float = 175.0
-@export var warning_seconds: float = 0.85
-@export var lunge_speed: float = 400.0
-@export var lunge_seconds: float = 0.55
-@export var recovery_seconds: float = 1.6
+@export var approach_speed: float = 155.0
+@export var trigger_distance: float = 200.0
+@export var warning_seconds: float = 0.45
+@export var lunge_speed: float = 540.0
+@export var lunge_seconds: float = 0.35
+@export var recovery_seconds: float = 0.65
+@export var max_lunges: int = 3
 
 var _phase := Phase.SEEK
 var _left: float = 0.0
+var _lunges_used: int = 0
 var _locked_direction := Vector2.RIGHT
 
 @onready var _tall: Line2D = $Tell
@@ -42,6 +44,7 @@ func _physics_process(delta: float) -> void:
 			if _left <= 0.0:
 				_phase = Phase.LUNGE
 				_left = lunge_seconds
+				_lunges_used += 1
 				_tall.hide()
 				
 				if overlaps_body(target):
@@ -65,8 +68,10 @@ func _physics_process(delta: float) -> void:
 			global_position = river.clamp_to_water(global_position + drift, water_margin)
 			_left -= delta
 			if _left <= 0.0:
-				_die(false)
-
+				if _lunges_used >= max_lunges:
+					_die(false)
+				else:
+					_phase = Phase.SEEK
 func _begin_warning(offset: Vector2) -> void:
 	_phase = Phase.WARN
 	_left = warning_seconds
@@ -84,4 +89,5 @@ func _begin_warning(offset: Vector2) -> void:
 func _begin_recovery() -> void:
 	_phase = Phase.RECOVER
 	_left = recovery_seconds
-	_visual.modulate = Color(0.55, 0.60, 0.65, 1.0)
+	var spent := float(_lunges_used)  / float(maxi(1, max_lunges))
+	_visual.modulate = Color.WHITE.lerp(Color(0.55, 0.80, 0.65, 1.0), spent)
