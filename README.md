@@ -1,8 +1,8 @@
 Made in Godot 4
 
-## Headwaters
+## BreakWater
 What it is:
-* Headwaters is a game about rowing upstream while enemies try to sink your boat. You gotta stop rowing to aim and shoot, and the river also pushes you back down!! Kill enemies, collect scrap, and spend it at docks to make the next stretch a little less miserable.
+* BreakWater is a game about rowing upstream while enemies try to sink your boat. You gotta stop rowing to aim and shoot, and the river also pushes you back down!! Kill enemies, collect scrap, and spend it at docks to make the next stretch a little less miserable.
 
 ## How to use
 Itch demo link: https://mustardmustard.itch.io/breakwater
