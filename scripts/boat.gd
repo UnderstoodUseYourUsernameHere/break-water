@@ -151,3 +151,7 @@ func _begin_stroke(perfect: bool) -> void:
 func _enter_recovery() -> void:
 	_stroke = Stroke.RECOVER
 	_stroke_left = recovery_time
+
+func get_water_speed() -> float:
+	return _row_velocity.length()
+	
